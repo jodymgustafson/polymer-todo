@@ -1,0 +1,51 @@
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/polymer/lib/elements/dom-repeat";
+/**
+ * @customElement
+ * @polymer
+ */
+class AddTask extends PolymerElement {
+    constructor() {
+        super(...arguments);
+        this.taskName = "";
+    }
+    static get template() {
+        return html `
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <div>
+            <input id="taskName" type="text" placeholder="New Task Name" value="{{taskName::change}}" on-keyup="taskNameKeyUp">
+            <button on-click="addTask">Add Task</button>
+        </div>
+        `;
+    }
+    static get properties() {
+        return {
+            item: {
+                type: Object,
+                notify: true,
+            },
+        };
+    }
+    taskNameKeyUp(ev) {
+        let code = ev.which;
+        if (code === 13) {
+            this.addTask();
+        }
+    }
+    ready() {
+        super.ready();
+        this.$.taskName.focus();
+    }
+    addTask() {
+        if (this.taskName) {
+            this.dispatchEvent(new CustomEvent("add", { detail: { name: this.taskName } }));
+            this.taskName = "";
+            this.$.taskName.focus();
+        }
+    }
+}
+window.customElements.define('add-task', AddTask);

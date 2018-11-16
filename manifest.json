@@ -1,0 +1,7 @@
+{
+  "name": "polymer-todo",
+  "short_name": "polymer-todo",
+  "description": "A simple todo list",
+  "start_url": "/",
+  "display": "standalone"
+}
