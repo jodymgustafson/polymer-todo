@@ -1,5 +1,4 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import "@polymer/polymer/lib/elements/dom-repeat";
 /**
  * @customElement
  * @polymer

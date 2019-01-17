@@ -1,5 +1,6 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import "@polymer/polymer/lib/elements/dom-repeat";
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-icon/iron-icon';
 /**
  * @customElement
  * @polymer
@@ -15,10 +16,14 @@ class AddTask extends PolymerElement {
             :host {
                 display: block;
             }
+            .small-icon {
+                --iron-icon-height: 1.25em;
+                --iron-icon-width: 1.25em;
+            }
         </style>
         <div>
             <input id="taskName" type="text" placeholder="New Task Name" value="{{taskName::change}}" on-keyup="taskNameKeyUp">
-            <button on-click="addTask">Add Task</button>
+            <button on-click="addTask"><iron-icon icon="add-box" class="small-icon"></iron-icon> Add Task</button>
         </div>
         `;
     }

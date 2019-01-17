@@ -1,4 +1,6 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-icon/iron-icon';
 import "./todo-list";
 import "./add-task";
 import { TodoItemModel } from './todoItemModel';
@@ -17,8 +19,9 @@ class PolymerTodoApp extends PolymerElement {
               font-family: Roboto, sans-serif;
             }
           </style>
-          <h2>TODO List: Polymer Style</h2>
+          <h2>TODO List: <iron-icon icon="polymer"></iron-icon> Polymer Style</h2>
           <p>You have [[todoList.length]] tasks</p>
+          
           <add-task on-add="_addTask"></add-task>
           <todo-list items="{{todoList}}"></todo-list>
         `;

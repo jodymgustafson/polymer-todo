@@ -2,6 +2,8 @@
   "name": "polymer-todo",
   "description": "A simple todo list",
   "dependencies": {
+    "@polymer/iron-icon": "^3.0.1",
+    "@polymer/iron-icons": "^3.0.1",
     "@polymer/polymer": "^3.0.0"
   },
   "devDependencies": {
