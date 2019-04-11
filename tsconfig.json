@@ -3,6 +3,7 @@
         "target": "es2015",
         "module": "esnext",
         "sourceMap": false,
+        "moduleResolution": "node",
         "rootDir": "./src",
         "baseUrl": "./node_modules"
     }

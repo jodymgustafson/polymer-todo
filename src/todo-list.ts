@@ -1,6 +1,4 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import "@polymer/polymer/lib/elements/dom-repeat";
-import "@polymer/polymer/lib/elements/dom-if";
+import { LitElement, html, TemplateResult, css, PropertyDeclarations } from 'lit-element';
 import "./todo-item";
 import { TodoItemModel } from './todoItemModel';
 
@@ -8,55 +6,36 @@ import { TodoItemModel } from './todoItemModel';
  * @customElement
  * @polymer
  */
-class TodoList extends PolymerElement {
-    static get template() {
-        return html`
-        <style>
-            :host {
-                display: block;
-                margin-top: 1em;
-            }
-        </style>
-        <div>
-            <template is="dom-if" if="[[!items.length]]">
-                <p>Your todo list is empty</p>
-            </template>
-            <template is="dom-repeat" items="{{items}}">
-                <todo-item item={{item}} on-deleted="deleteItem"></todo-item>
-            </template>
-        </div>
-        `;
-    }
-    static get properties() {
+class TodoList extends LitElement
+{
+    items: TodoItemModel[] = [];
+
+    static get properties(): PropertyDeclarations {
         return {
-            items: {
-                type: Array,
-                notify: true,
-                observer: "_itemsChanged"
-            }
+            items: { type: Array }
         };
     }
 
-    _itemsChanged(items)
-    {
-        console.log("items changed " + items.length);
-    }
-    
-    items: TodoItemModel[];
-
-    constructor()
-    {
+    constructor() {
         super();
     }
 
-    deleteItem(ev: CustomEvent): void
-    {
-        let id = ev.detail.id;
-        let idx = this.items.findIndex(i => i.id === id);
-        if (idx >= 0)
-        {
-            this.splice("items", idx, 1);
-        }
+    static styles = [
+        css`
+          :host {
+            display: block;
+            margin-top: 1em;
+          }
+        `
+    ];
+
+    render(): TemplateResult {
+        return html`
+            <p ?hidden="${this.items.length > 0}">Your todo list is empty</p>
+            ${this.items.map(item => html`
+                <todo-item .item="${item}"></todo-item>
+            `)}
+        `;
     }
 }
 

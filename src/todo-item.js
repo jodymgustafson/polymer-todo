@@ -1,12 +1,37 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, css } from 'lit-element';
 /**
  * @customElement
  * @polymer
  */
-class TodoItem extends PolymerElement {
-    static get template() {
+class TodoItem extends LitElement {
+    constructor() {
+        super();
+    }
+    static get properties() {
+        return {
+            item: { type: Object }
+        };
+    }
+    render() {
         return html `
-        <style>
+        <button @click="${this.deleteItem}" title="delete">&cross;</button>
+        <span>${this.item.name}</span>
+        <span class="created">(created ${this.formatDate(this.item.created)})</span>
+        `;
+    }
+    formatDate(created) {
+        return created.toLocaleDateString();
+    }
+    deleteItem() {
+        this.dispatchEvent(new CustomEvent("task-deleted", {
+            detail: { id: this.item.id },
+            bubbles: true,
+            composed: true
+        }));
+    }
+}
+TodoItem.styles = [
+    css `
             :host {
                 display: block;
             }
@@ -23,30 +48,6 @@ class TodoItem extends PolymerElement {
             button:hover {
                 background-color: silver;
             }
-        </style>
-        <div>
-            <button on-click="_deleteItem" title="delete">&cross;</button>
-            <span>[[item.name]]</span>
-            <span class="created">(created [[_formatDate(item.created)]])</span>
-        </div>
-        `;
-    }
-    static get properties() {
-        return {
-            item: {
-                type: Object,
-                notify: true,
-            },
-        };
-    }
-    constructor() {
-        super();
-    }
-    _formatDate(created) {
-        return created.toLocaleDateString();
-    }
-    _deleteItem() {
-        this.dispatchEvent(new CustomEvent("deleted", { detail: { id: this.item.id } }));
-    }
-}
+        `
+];
 window.customElements.define('todo-item', TodoItem);

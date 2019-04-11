@@ -1,14 +1,27 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, TemplateResult, css, PropertyDeclarations } from 'lit-element';
 import { TodoItemModel } from './todoItemModel';
 
 /**
  * @customElement
  * @polymer
  */
-class TodoItem extends PolymerElement {
-    static get template() {
-        return html`
-        <style>
+class TodoItem extends LitElement
+{
+    item: TodoItemModel;
+
+    static get properties(): PropertyDeclarations {
+        return {
+            item: { type: Object }
+        };
+    }
+    
+    constructor()
+    {
+        super();
+    }
+
+    static styles = [
+        css`
             :host {
                 display: block;
             }
@@ -25,38 +38,29 @@ class TodoItem extends PolymerElement {
             button:hover {
                 background-color: silver;
             }
-        </style>
-        <div>
-            <button on-click="_deleteItem" title="delete">&cross;</button>
-            <span>[[item.name]]</span>
-            <span class="created">(created [[_formatDate(item.created)]])</span>
-        </div>
+        `
+    ];
+
+    render(): TemplateResult {
+        return html`
+        <button @click="${this.deleteItem}" title="delete">&cross;</button>
+        <span>${this.item.name}</span>
+        <span class="created">(created ${this.formatDate(this.item.created)})</span>
         `;
     }
-    static get properties() {
-        return {
-            item: {
-                type: Object,
-                notify: true,
-            },
-        };
-    }
 
-    item: TodoItemModel;
-    
-    constructor()
-    {
-        super();
-    }
-
-    _formatDate(created: Date): string
+    formatDate(created: Date): string
     {
         return created.toLocaleDateString();
     }
 
-    _deleteItem(): void
+    deleteItem(): void
     {
-        this.dispatchEvent(new CustomEvent("deleted", {detail: {id: this.item.id}}));
+        this.dispatchEvent(new CustomEvent("task-deleted", {
+            detail: {id: this.item.id},
+            bubbles: true,
+            composed: true
+        }));
     }
 }
 

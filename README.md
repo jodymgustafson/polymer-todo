@@ -2,8 +2,10 @@
 
 A simple todo list.
 
-This is to demonstrate a number of Polymer basics including elements, properties and binding.
+This is to demonstrate a number of Polymer lit-element basics including elements, properties and binding.
 It also shows how to use TypeScript to write Polymer modules.
+
+The old version using version 3 of Polymer is in the src-v3 folder.
 
 ## Install the Polymer-CLI
 

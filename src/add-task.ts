@@ -1,4 +1,4 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, TemplateResult, css, PropertyDeclarations } from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
 
@@ -6,10 +6,18 @@ import '@polymer/iron-icon/iron-icon';
  * @customElement
  * @polymer
  */
-class AddTask extends PolymerElement {
-    static get template() {
-        return html`
-        <style>
+class AddTask extends LitElement
+{
+    private taskName = "";
+
+    static get properties(): PropertyDeclarations {
+        return {
+            taskName: { type: String }
+        };
+    }
+
+    static styles = [
+        css`
             :host {
                 display: block;
             }
@@ -17,24 +25,20 @@ class AddTask extends PolymerElement {
                 --iron-icon-height: 1.25em;
                 --iron-icon-width: 1.25em;
             }
-        </style>
-        <div>
-            <input id="taskName" type="text" placeholder="New Task Name" value="{{taskName::change}}" on-keyup="taskNameKeyUp">
-            <button on-click="addTask"><iron-icon icon="add-box" class="small-icon"></iron-icon> Add Task</button>
-        </div>
+        `
+    ];
+    
+    render(): TemplateResult {
+        return html`
+        <input id="taskName" type="text" placeholder="New Task Name" .value="${this.taskName}" @keyup="${this.taskNameKeyUp}" autofocus>
+        <button @click="${this.addTask}"><iron-icon icon="add-box" class="small-icon"></iron-icon> Add Task</button>
         `;
-    }
-    static get properties() {
-        return {
-            item: {
-                type: Object,
-                notify: true,
-            },
-        };
     }
 
     taskNameKeyUp(ev: KeyboardEvent)
     {
+        this.taskName = (ev.target as HTMLInputElement).value;
+
         let code = ev.which;
         if (code === 13)
         {
@@ -42,21 +46,13 @@ class AddTask extends PolymerElement {
         }
     }
 
-    taskName = "";
-    
-    ready()
-    {
-        super.ready();
-        (this.$.taskName as HTMLInputElement).focus();
-    }
-
     addTask(): void
     {
         if (this.taskName)
         {
-            this.dispatchEvent(new CustomEvent("add", {detail: {name: this.taskName}}));
+            this.dispatchEvent(new CustomEvent("add-task", {detail: {name: this.taskName}}));
             this.taskName = "";
-            (this.$.taskName as HTMLInputElement).focus();
+            (this.shadowRoot.getElementById("taskName") as HTMLInputElement).focus();
         }
     }
 }
